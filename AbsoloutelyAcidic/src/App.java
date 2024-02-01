@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Scanner;
 
 public class App {
@@ -77,9 +78,95 @@ public class App {
 
         // we now need to determine the value of the highest frequency readings
 
-        System.out.println(Arrays.toString(readings));
-        System.out.println(Arrays.deepToString(frequencyArray));
-        System.out.println(Arrays.toString(sortedFrequency));
+        // bubble sort the sortedFrequency array to get highest frequencies in order,
+        // than backcheck in original array to find the corresonding index(Value) of the
+        // readings
+        int[] highestFrequency = new int[sortedFrequency.length];
 
+        int[] tempArr = Arrays.copyOf(sortedFrequency, sortedFrequency.length);
+
+        Arrays.sort(tempArr);
+
+        // copy in reverse order into the highest freq array
+
+        for (int i = 0; i < tempArr.length; i++) {
+            highestFrequency[tempArr.length - i - 1] = tempArr[i];
+        }
+
+        // we now have an array called highestFrequency storing the highest frequencies
+        // of each in order, we now need to check this against the original sorted array
+        boolean highest = false;
+        boolean done = false;
+        int highestFrequencyReading = 0;
+        int lowestFrequencyReading = 0;
+        int lowestFrequencyReading2 = 0;
+        int highestFrequencyReading2 = 0;
+        int absoluteDifference = 0;
+        int tempHighestReading = 0;
+        int tempLowestReading = 1001;
+
+        for (int i = 0; i < highestFrequency.length; i++) {
+            if (done) {
+                // done
+            } else {
+                // backcheck agaisnt original array
+                for (int j = 0; j < sortedFrequency.length; j++) {
+                    if (highestFrequency[i] == sortedFrequency[j]) {
+                        // if frequency found in the OG array, take the index as the value of the
+                        // highest frequency reading.
+                        if (!highest) {
+                            if (j > tempHighestReading) {
+                                // make sure we store the highest value of reading regardless
+                                highestFrequencyReading = j;
+                                tempHighestReading = j;
+                            }
+                            if (j < tempLowestReading) {
+                                // also keep track of the lowest reading
+                                tempLowestReading = j;
+                                lowestFrequencyReading = j;
+                            }
+
+                        } else {
+                            if (j > tempHighestReading) {
+                                highestFrequencyReading2 = j;
+                                tempHighestReading = j;
+                            }
+                            if (j < tempLowestReading) {
+                                // also keep track of the lowest reading
+                                tempLowestReading = j;
+                                lowestFrequencyReading2 = j;
+                            }
+                        }
+                    }
+                }
+
+                tempHighestReading = 0;
+                tempLowestReading = 1001;
+                // we have already passed through once so we have secured one of the highest
+                // readings.
+                if (highestFrequency[i] > highestFrequency[i + 1]) {
+                    if (highest) {
+                        // if we have already gone through the cycle for the second highest and the next
+                        // frequencys are less, we are done
+                        done = true;
+                    }
+                    // only if there is one highest frequency
+                    highest = true;
+                }
+
+            }
+        }
+
+        // we now have both the highs and lows of the most frequent readings
+
+        //calculate highest diffrence
+
+        absoluteDifference = Math.abs(highestFrequencyReading - lowestFrequencyReading2);
+
+        if(absoluteDifference < Math.abs(lowestFrequencyReading - highestFrequencyReading2)){
+            absoluteDifference = Math.abs(lowestFrequencyReading - highestFrequencyReading2);
+        }
+        System.out.println();
+        System.out.println(absoluteDifference);
     }
 }
