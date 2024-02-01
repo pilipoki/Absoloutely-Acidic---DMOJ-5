@@ -1,5 +1,4 @@
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Scanner;
 
 public class App {
@@ -14,37 +13,48 @@ public class App {
             readings[i] = sc.nextInt();
         }
         // we now have an array unorganized with readings
-
         // we should organize this array into an array that keeps track of the frequency
         // of each reading
-        
+
         int maxReading = readings[0];
-        for (int i = 0; i < readings.length; i++) {
-            if (maxReading < readings[i]) {
+        for (int i = 0; i < readings.length - 1; i++) {
+            if (maxReading < readings[i + 1]) {
                 // change
-                maxReading = readings[i];
+                maxReading = readings[i + 1];
             }
             // do nothing if its not less
         }
-        int[][] frequencyArray = new int[maxReading+1][numberOfSensors];
-        for (int i = 0; i < readings.length; i++) {
-            // first index of the array should be the actual value of the array while the
-            // second index will be the frequency of the value appearing.
 
-            // if its the first time this frequency has appeared set this index to 1
-            if (frequencyArray[readings[i]][0] == 0) {
-                frequencyArray[readings[i]][0] = 1;
-            } else {
-                // if the index is already one then we need to increase the frequency of this
-                // reading
-                for (int j = 0; j < frequencyArray[readings[i]].length; j++) {
-                    if (frequencyArray[readings[i]][j] == 0) {
-                        frequencyArray[readings[i]][j] = 1;
-                        break;
-                    }
+        short[] frequencyArray = new short[maxReading + 1];
+        for (int i = 0; i < readings.length; i++) {
+            for (int j = 0; j < frequencyArray.length; j++) {
+                if (readings[i] == j) {
+                    // copies in readings into a frequency array where the index is the value of
+                    // reading and the element is the frequency of that reading
+                    frequencyArray[j]++;
                 }
             }
         }
+
+        // short[][] frequencyArray = new short[maxReading+1][numberOfSensors/2];
+        // for (int i = 0; i < readings.length; i++) {
+        // // first index of the array should be the actual value of the array while the
+        // // second index will be the frequency of the value appearing.
+
+        // // if its the first time this frequency has appeared set this index to 1
+        // if (frequencyArray[readings[i]][0] == 0) {
+        // frequencyArray[readings[i]][0] = 1;
+        // } else {
+        // // if the index is already one then we need to increase the frequency of this
+        // // reading
+        // for (int j = 0; j < frequencyArray[readings[i]].length; j++) {
+        // if (frequencyArray[readings[i]][j] == 0) {
+        // frequencyArray[readings[i]][j] = 1;
+        // break;
+        // }
+        // }
+        // }
+        // }
 
         // we now have a 2d array with the first index equal to the value of the reading
         // and the second index with the frequency of the reading with the number of the
@@ -52,26 +62,30 @@ public class App {
 
         // we could sort this array into another 1D array to store just the first index
         // of the values with those defined and the value of them as the frequency
-        int[] sortedFrequency;
-        sortedFrequency = new int[maxReading + 1];
-        for (int i = 0; i < frequencyArray.length; i++) {
-            int freq = 0;
-            for (int j = 0; j < frequencyArray[i].length; j++) {
-                // go through every element to find valid readings
-                if (frequencyArray[i][j] != 0) {
-                    // if this value actually has at least one frequency, start counting the
-                    // frequency and store in the sorted array
-                    // keep going
-                    // increase freq
-                    freq++;
-                    // you have reached the index where its equal to 0 so now stop and store in
-                    // sorted
-                    sortedFrequency[i] = freq;
-                } else {
-                    // do nothing
-                }
-            }
-        }
+        // short[] sortedFrequency;
+        // sortedFrequency = new short[maxReading + 1];
+        // for (int i = 0; i < frequencyArray.length; i++) {
+        // int freq = 0;
+        // for (int j = 0; j < frequencyArray[i].length; j++) {
+        // // go through every element to find valid readings
+        // if (frequencyArray[i][j] != 0) {
+        // // if this value actually has at least one frequency, start counting the
+        // // frequency and store in the sorted array
+        // // keep going
+        // // increase freq
+        // freq++;
+        // // you have reached the index where its equal to 0 so now stop and store in
+        // // sorted
+        // sortedFrequency[i] = (short)freq;
+        // } else {
+        // // do nothing
+        // }
+        // }
+        // }
+
+        // free up memory
+        // frequencyArray = null;
+        // readings =null;
 
         // we now have the sortedFrequency array that has all the readings values in the
         // index and the frequency in the elements
@@ -81,9 +95,9 @@ public class App {
         // bubble sort the sortedFrequency array to get highest frequencies in order,
         // than backcheck in original array to find the corresonding index(Value) of the
         // readings
-        int[] highestFrequency = new int[sortedFrequency.length];
+        short[] highestFrequency = new short[frequencyArray.length];
 
-        int[] tempArr = Arrays.copyOf(sortedFrequency, sortedFrequency.length);
+        short[] tempArr = Arrays.copyOf(frequencyArray, frequencyArray.length);
 
         Arrays.sort(tempArr);
 
@@ -111,8 +125,8 @@ public class App {
                 // done
             } else {
                 // backcheck agaisnt original array
-                for (int j = 0; j < sortedFrequency.length; j++) {
-                    if (highestFrequency[i] == sortedFrequency[j]) {
+                for (int j = 0; j < frequencyArray.length; j++) {
+                    if (highestFrequency[i] == frequencyArray[j]) {
                         // if frequency found in the OG array, take the index as the value of the
                         // highest frequency reading.
                         if (!highest) {
