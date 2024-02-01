@@ -96,6 +96,7 @@ public class App {
         // we now have an array called highestFrequency storing the highest frequencies
         // of each in order, we now need to check this against the original sorted array
         boolean highest = false;
+        boolean twoHighest = true;
         boolean done = false;
         int highestFrequencyReading = 0;
         int lowestFrequencyReading = 0;
@@ -144,6 +145,11 @@ public class App {
                 tempLowestReading = 1001;
                 // we have already passed through once so we have secured one of the highest
                 // readings.
+                if (highestFrequency[i] == highestFrequency[i + 1]) {
+                    // we have two highest frequencies or more... stop and exit loop
+                    done = true;
+                    twoHighest = true;
+                }
                 if (highestFrequency[i] > highestFrequency[i + 1]) {
                     if (highest) {
                         // if we have already gone through the cycle for the second highest and the next
@@ -159,14 +165,17 @@ public class App {
 
         // we now have both the highs and lows of the most frequent readings
 
-        //calculate highest diffrence
+        // calculate highest diffrence
+        if (twoHighest) {
+            absoluteDifference = highestFrequencyReading - lowestFrequencyReading;
+        } else {
+            absoluteDifference = Math.abs(highestFrequencyReading - lowestFrequencyReading2);
 
-        absoluteDifference = Math.abs(highestFrequencyReading - lowestFrequencyReading2);
-
-        if(absoluteDifference < Math.abs(lowestFrequencyReading - highestFrequencyReading2)){
-            absoluteDifference = Math.abs(lowestFrequencyReading - highestFrequencyReading2);
+            if (absoluteDifference < Math.abs(lowestFrequencyReading - highestFrequencyReading2)) {
+                absoluteDifference = Math.abs(lowestFrequencyReading - highestFrequencyReading2);
+            }
         }
-        System.out.println();
+
         System.out.println(absoluteDifference);
     }
 }
