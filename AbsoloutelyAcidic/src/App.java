@@ -17,8 +17,16 @@ public class App {
 
         // we should organize this array into an array that keeps track of the frequency
         // of each reading
-
-        int[][] frequencyArray = new int[1000][numberOfSensors];
+        
+        int maxReading = readings[0];
+        for (int i = 0; i < readings.length; i++) {
+            if (maxReading < readings[i]) {
+                // change
+                maxReading = readings[i];
+            }
+            // do nothing if its not less
+        }
+        int[][] frequencyArray = new int[maxReading+1][numberOfSensors];
         for (int i = 0; i < readings.length; i++) {
             // first index of the array should be the actual value of the array while the
             // second index will be the frequency of the value appearing.
@@ -45,14 +53,6 @@ public class App {
         // we could sort this array into another 1D array to store just the first index
         // of the values with those defined and the value of them as the frequency
         int[] sortedFrequency;
-        int maxReading = readings[0];
-        for (int i = 0; i < readings.length; i++) {
-            if (maxReading < readings[i]) {
-                // change
-                maxReading = readings[i];
-            }
-            // do nothing if its not less
-        }
         sortedFrequency = new int[maxReading + 1];
         for (int i = 0; i < frequencyArray.length; i++) {
             int freq = 0;
@@ -96,7 +96,7 @@ public class App {
         // we now have an array called highestFrequency storing the highest frequencies
         // of each in order, we now need to check this against the original sorted array
         boolean highest = false;
-        boolean twoHighest = true;
+        boolean twoHighest = false;
         boolean done = false;
         int highestFrequencyReading = 0;
         int lowestFrequencyReading = 0;
@@ -145,7 +145,7 @@ public class App {
                 tempLowestReading = 1001;
                 // we have already passed through once so we have secured one of the highest
                 // readings.
-                if (highestFrequency[i] == highestFrequency[i + 1]) {
+                if (highestFrequency[0] == highestFrequency[1]) {
                     // we have two highest frequencies or more... stop and exit loop
                     done = true;
                     twoHighest = true;
